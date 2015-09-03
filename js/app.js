@@ -1,43 +1,46 @@
 
 $(document).ready(function(){
 
-//random number generated
+	//random number generated
 	function randomNumGen(){
-	var randomNumb = Math.floor((Math.random() * 100) + 1);
-	return randomNumb;
+	compRandNumb = Math.floor((Math.random() * 100) + 1);
 		};
 
-	/*--- Display information modal box ---*/
-  	$(".what").click(function(){
-    	$(".overlay").fadeIn(1000);
+  	$('.new').on('click',function(){
+  		randomNumGen();
   	});
 
-  	/*--- Hide information modal box ---*/
-  	$("a.close").click(function(){
-  		$(".overlay").fadeOut(1000);
-  	});
-
-  	var compRandNumb = $('.new').on('click',function(){
-  		return randomNumGen();
-  	});
-
-//Validate user input for non letters
-  	var userValidInput = $("#guessButton").on('click', function(){
+//Validate user input and compare numbers 
+  	var userValidInput = $("#guessButton").on('click', function(event){
+  		console.log(compRandNumb);
+  		//var counter = 0;
+  		//$('#count').text(counter);
+  		event.preventDefault();
   		var valid = $('.text').val();
+  					$('.text').val('');
+  		var numAbsolute = Math.abs(valid - compRandNumb);
   		if (valid.match(/^[A-Za-z]+$/)) {
   			alert("please enter a numeric number")
   			valid.text('');
   			return false;
-  		} else if(compRandNumb > valid){
-  			alert ( "comp wins" )
+  		} else if(numAbsolute >= (50)){
+  			alert('ice cold');
+  		} else if (numAbsolute >= (30)) {
+  			alert('cold');
+  		} else if (numAbsolute >= (20)) {
+  			alert('warm');
+  		} else if (numAbsolute >= (10)) {
+  			alert('hot');
+  		} else if (numAbsolute >= (1)) {
+  			alert('very hot');
   		} else {
-  			alert( "user wins")
-  		};
+  			alert('we have a winner ...dinggg dinggg')
+  		}
 
+  		//counter++;
   	});	
 
-  	
-
+  	randomNumGen();
 });
 
 

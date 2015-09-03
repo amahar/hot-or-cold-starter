@@ -1,6 +1,7 @@
 
 $(document).ready(function(){
-
+firstGuess = 0;
+counter = 0;
 	//random number generated
 	function randomNumGen(){
 	compRandNumb = Math.floor((Math.random() * 100) + 1);
@@ -8,39 +9,69 @@ $(document).ready(function(){
 
   	$('.new').on('click',function(){
   		randomNumGen();
+  		reset();
   	});
-
 //Validate user input and compare numbers 
   	var userValidInput = $("#guessButton").on('click', function(event){
+  		numberAttempts();
   		console.log(compRandNumb);
-  		//var counter = 0;
-  		//$('#count').text(counter);
+  		console.log(firstGuess);
   		event.preventDefault();
-  		var valid = $('.text').val();
+  		if (firstGuess > 0) {
+  				secondTry();
+  				
+  				return;
+  			};
+  			firstTry();
+  			
+   	});	
+ 		
+ 	function firstTry(){
+		var valid = $('.text').val();
   					$('.text').val('');
   		var numAbsolute = Math.abs(valid - compRandNumb);
   		if (valid.match(/^[A-Za-z]+$/)) {
   			alert("please enter a numeric number")
   			valid.text('');
   			return false;
-  		} else if(numAbsolute >= (50)){
-  			alert('ice cold');
-  		} else if (numAbsolute >= (30)) {
-  			alert('cold');
-  		} else if (numAbsolute >= (20)) {
-  			alert('warm');
-  		} else if (numAbsolute >= (10)) {
-  			alert('hot');
-  		} else if (numAbsolute >= (1)) {
-  			alert('very hot');
+  		} else if(numAbsolute >= (50)) {
+  			$('#feedback').text('Cold:Number entered '+ valid);
+  				firstGuess = valid;
+  		} else if((numAbsolute < 50 && numAbsolute > 0)) {
+  			$('#feedback').text('Warm:Number entered '+ valid);
+  				firstGuess = valid;
   		} else {
-  			alert('we have a winner ...dinggg dinggg')
+  			$('#feedback').text('You are a winner');
   		}
-
-  		//counter++;
-  	});	
-
-  	randomNumGen();
+	}
+	function secondTry(){
+		var valid = $('.text').val();
+  					$('.text').val('');
+  		var numAbsolute = Math.abs(valid - compRandNumb);
+  		var compareNum = Math.abs(firstGuess - compRandNumb);
+  		if (valid.match(/^[A-Za-z]+$/)) {
+  			alert("please enter a numeric number")
+  			valid.text('');
+  			return false;
+  		} else if(numAbsolute >= (compareNum)) {
+  			$('#feedback').text('Colder:Number entered '+ valid);
+  				firstGuess = valid;
+  		} else if((numAbsolute < compareNum && numAbsolute > 0)){
+  			$('#feedback').text('Warmer:Number entered '+ valid);
+  				firstGuess = valid;
+  		} else {
+  			$('#feedback').text('You are a winner');
+  		}
+	}
+	function reset(){
+		firstGuess = 0;
+		$('#feedback').text('Make your Guess!');
+	}
+	function numberAttempts(){
+		counter++;
+		$('#count').text(counter);
+	}
+	randomNumGen();
 });
 
 
